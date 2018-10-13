@@ -17,6 +17,7 @@ FROM rustlang/rust:nightly
 
 COPY --from=build /hato/target/release/hato .
 
+ENV ROCKET_ADDRESS=0.0.0.0
 EXPOSE 8000
 
 CMD ["./hato"]
