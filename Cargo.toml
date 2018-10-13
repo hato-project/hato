@@ -3,6 +3,7 @@ name = "hato"
 version = "0.1.0"
 authors = ["realityone <realityone@me.com>"]
 edition = "2018"
+cargo-features = ["edition"]
 
 [dependencies]
 rocket = "0.3.17"
