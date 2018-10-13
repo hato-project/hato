@@ -1,13 +1,14 @@
-#![feature(plugin)]
-#![plugin(rocket_codegen)]
+extern crate actix_web;
 
-extern crate rocket;
+use actix_web::{server, App, HttpRequest};
 
-#[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
+fn index(_req: &HttpRequest) -> &'static str {
+    "Hello Hato!"
 }
 
 fn main() {
-    rocket::ignite().mount("/", routes![index]).launch();
+    server::new(|| App::new().resource("/", |r| r.f(index)))
+        .bind("127.0.0.1:8088")
+        .unwrap()
+        .run();
 }
