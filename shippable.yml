@@ -3,10 +3,11 @@ branches:
   only:
     - master
     - release/*
-    - shippable
+    - shippable/*
 build:
   ci:
     - export IMAGE_TAG="${BRANCH#*/}"
-    - docker build -t hato-project/hato:$IMAGE_TAG .
+    - export CARGO_FLAGS="--release"
+    - docker build --build-arg CARGO_FLAGS=$CARGO_FLAGS -t hato-project/hato:$IMAGE_TAG .
   post_ci:
     # docker push hato-project/hato:$IMAGE_TAG
