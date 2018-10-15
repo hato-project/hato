@@ -11,7 +11,10 @@ integrations:
 build:
   ci:
     - export IMAGE_TAG="${BRANCH#*/}"-"${COMMIT:0:8}"
-    - export CARGO_FLAGS="--release"
+    - >
+      if [[ $BRANCH =~ ^release ]]; then
+        export CARGO_FLAGS="--release"
+      fi
     - docker build --build-arg CARGO_FLAGS=$CARGO_FLAGS -t hatoproject/hato:$IMAGE_TAG .
   post_ci:
     - docker push hatoproject/hato:$IMAGE_TAG
