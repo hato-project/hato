@@ -15,9 +15,9 @@ build:
     - docker build --build-arg CARGO_FLAGS=$CARGO_FLAGS -t hatoproject/hato:$IMAGE_TAG .
   post_ci:
     - docker push hatoproject/hato:$IMAGE_TAG
-    - |
-    if [[ $BRANCH =~ ^release ]]; then
+    - >
+      if [[ $BRANCH =~ ^release ]]; then
         export VERSION="${BRANCH#*/}"
         docker tag hatoproject/hato:$IMAGE_TAG hatoproject/hato:$VERSION
         docker push hatoproject/hato:$VERSION
-    fi
+      fi
