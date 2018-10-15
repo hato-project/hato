@@ -4,10 +4,20 @@ branches:
     - master
     - release/*
     - shippable/*
+integrations:
+  hub:
+    - integrationName: realityone_docker_hub
+      type: dockerRegistryLogin
 build:
   ci:
-    - export IMAGE_TAG="${BRANCH#*/}"
+    - export IMAGE_TAG="${BRANCH#*/}"-"${COMMIT:0:8}"
     - export CARGO_FLAGS="--release"
-    - docker build --build-arg CARGO_FLAGS=$CARGO_FLAGS -t hato-project/hato:$IMAGE_TAG .
+    - docker build --build-arg CARGO_FLAGS=$CARGO_FLAGS -t hatoproject/hato:$IMAGE_TAG .
   post_ci:
-    # docker push hato-project/hato:$IMAGE_TAG
+    - docker push hatoproject/hato:$IMAGE_TAG
+    - |
+    if [[ $BRANCH =~ ^release ]]; then
+        export VERSION="${BRANCH#*/}"
+        docker tag hatoproject/hato:$IMAGE_TAG hatoproject/hato:$VERSION
+        docker push hatoproject/hato:$VERSION
+    fi
