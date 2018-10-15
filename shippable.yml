@@ -1,0 +1,12 @@
+language: none
+branches:
+  only:
+    - master
+    - release/*
+    - shippable
+build:
+  ci:
+    - export IMAGE_TAG="${BRANCH#*/}"
+    - docker build -t hato-project/hato:$IMAGE_TAG .
+  post_ci:
+    # docker push hato-project/hato:$IMAGE_TAG
