@@ -13,11 +13,11 @@ ADD . /hato
 RUN touch src/* && \
     cargo build -Z unstable-options --out-dir $OUT_DIR $CARGO_FLAGS
 
-FROM rustlang/rust:nightly
+FROM debian:stretch-slim
 
 ARG OUT_DIR=./target/docker/
-COPY --from=build /hato/$OUT_DIR/hato .
+COPY --from=build /hato/$OUT_DIR/hato /
 
 EXPOSE 8000
 
-CMD ["./hato"]
+CMD ["/hato"]
