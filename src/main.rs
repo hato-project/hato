@@ -1,14 +1,37 @@
+#[macro_use]
+extern crate diesel;
 extern crate actix_web;
+extern crate dotenv;
+extern crate env_logger;
+extern crate num_cpus;
+#[macro_use]
+extern crate log;
+extern crate futures;
+extern crate serde;
+#[macro_use]
+extern crate serde_json;
+extern crate chrono;
 
-use actix_web::{server, App, HttpRequest};
+mod common;
+mod db;
+// mod repos;
+mod api;
+mod router;
 
-fn index(_req: &HttpRequest) -> &'static str {
-    "Hello Hato!"
-}
+use actix_web::{actix::System, server};
 
 fn main() {
-    server::new(|| App::new().resource("/", |r| r.f(index)))
+    env_logger::init();
+
+    info!("Starting hato...");
+
+    let hato = System::new("hato");
+
+    server::new(move || vec![router::app().boxed()])
         .bind("0.0.0.0:8000")
         .unwrap()
-        .run();
+        .shutdown_timeout(2)
+        .start();
+
+    hato.run();
 }
