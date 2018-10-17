@@ -7,7 +7,7 @@ use diesel::r2d2::{ConnectionManager, Pool};
 use dotenv;
 use num_cpus;
 
-pub struct ConnDsl(pub Pool<ConnectionManager<MysqlConnection>>);
+pub struct ConnDsl(pub Pool<ConnectionManager<PgConnection>>);
 
 impl Actor for ConnDsl {
     type Context = SyncContext<Self>;
@@ -15,7 +15,7 @@ impl Actor for ConnDsl {
 
 pub fn init() -> Addr<ConnDsl> {
     let db_url = dotenv::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    let manager = ConnectionManager::<MysqlConnection>::new(db_url);
+    let manager = ConnectionManager::<PgConnection>::new(db_url);
     let conn = Pool::builder()
         .build(manager)
         .expect("Failed to create pool.");

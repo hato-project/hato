@@ -1,10 +1,11 @@
-version: '3.1'
+version: '2'
 services:
-  mysql:
-    image: mysql:5.7
-    restart: always
+  postgres:
+    image: "postgres:10"
     environment:
-      MYSQL_ROOT_PASSWORD: dangerous
-      MYSQL_DATABASE: hato
+      POSTGRES_DB: hato
+      POSTGRES_PASSWORD: dangerous
     ports:
-     - "3306:3306"
+      - "5432:5432"
+    volumes:
+      - "/data/pg:/var/lib/postgresql/data"
