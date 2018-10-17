@@ -1,4 +1,5 @@
 pub mod repo;
+pub mod webhook;
 
 use actix_web::HttpRequest;
 use chrono::prelude::*;
@@ -10,7 +11,7 @@ pub fn index(_: &HttpRequest) -> &'static str {
 pub fn ping(_: &HttpRequest) -> String {
     json!({
         "name": "hato",
-        "time": Utc::now(),
+        "time": Utc::now()
     })
     .to_string()
 }
