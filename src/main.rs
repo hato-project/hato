@@ -28,7 +28,7 @@ fn main() {
 
     info!("Starting hato...");
 
-    let hato = System::new("hato");
+    let sys = System::new("hato");
 
     server::new(move || vec![router::app_hato().boxed(), router::app_common().boxed()])
         .bind("0.0.0.0:8000")
@@ -36,5 +36,5 @@ fn main() {
         .shutdown_timeout(2)
         .start();
 
-    hato.run();
+    sys.run();
 }

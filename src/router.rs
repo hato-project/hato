@@ -4,7 +4,7 @@ use actix_web::{
         App,
 };
 
-use api::{index, ping, repo};
+use api::*;
 use common::AppState;
 use db::init;
 
@@ -25,7 +25,7 @@ pub fn app_hato() -> App<AppState> {
                                 .supports_credentials()
                                 .max_age(3600)
                                 .resource("/repo/{repo_id}", |r| {
-                                        r.method(Method::GET).with(repo);
+                                        r.method(Method::GET).with(repo::repo);
                                 })
                                 .register()
                 })

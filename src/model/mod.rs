@@ -1,6 +1,5 @@
 use actix_web::{actix::Message, Error};
 use chrono::prelude::*;
-use db::schema::repos;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Queryable)]
 pub struct Repo {
@@ -17,15 +16,4 @@ pub struct RepoID {
 
 impl Message for RepoID {
     type Result = Result<Option<Repo>, Error>;
-}
-
-impl Repo {
-    pub fn new() -> Repo {
-        Repo {
-            id: "".to_string(),
-            name: "".to_string(),
-            created_at: Local::now().naive_local(),
-            updated_at: Local::now().naive_local(),
-        }
-    }
 }

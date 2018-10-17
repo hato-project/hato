@@ -5,7 +5,6 @@ version = "0.1.0"
 
 [dependencies]
 actix-web = "0.7"
-chrono = {version="0.4.6", features=["serde"]}
 dotenv = "0.13.0"
 env_logger = "0.5.13"
 futures = "0.1.25"
@@ -14,6 +13,10 @@ num_cpus = "1.8.0"
 serde = "1.0.80"
 serde_derive = "1.0.80"
 serde_json = "1.0.32"
+
+[dependencies.chrono]
+features = ["serde"]
+version = "0.4.6"
 
 [dependencies.diesel]
 features = [
