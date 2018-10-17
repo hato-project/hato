@@ -1,5 +1,5 @@
 CREATE TABLE "public"."repos" (
-    "id" varchar,
+    "id" varchar NOT NULL,
     "name" varchar,
     "created_at" timestamp,
     "updated_at" timestamp,

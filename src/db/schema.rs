@@ -1,8 +1,8 @@
 table! {
     repos (id) {
         id -> Varchar,
-        name -> Varchar,
-        created_at -> Timestamp,
-        updated_at -> Timestamp,
+        name -> Nullable<Varchar>,
+        created_at -> Nullable<Timestamp>,
+        updated_at -> Nullable<Timestamp>,
     }
 }
