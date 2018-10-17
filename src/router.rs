@@ -36,4 +36,5 @@ pub fn app_common() -> App {
                 .middleware(middleware::Logger::default())
                 .resource("/", |r| r.f(index))
                 .resource("/ping", |r| r.f(ping))
+                .resource("/webhook", |r| r.method(Method::POST).with(webhook::webhook))
 }
