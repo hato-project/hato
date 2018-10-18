@@ -1,9 +1,14 @@
 language: rust
-
-rust:
-  - stable
-  - nightly
-
-script: |
-  cargo test
-
+before_script:
+  - rustup component add clippy-preview
+  - rustup component add rustfmt-preview
+matrix:
+  include:
+  - rust: stable
+    script:
+      - cargo test
+  - rust: nightly
+    script:
+      - cargo fmt --all -- --check
+      - cargo clippy
+      - cargo test

@@ -10,9 +10,8 @@ pub struct Payload {
     pub deleted: bool,
     pub forced: bool,
     pub base_ref: Option<String>,
-    pub compare: String,    
+    pub compare: String,
 }
-
 
 pub fn webhook(payload: Json<Payload>) -> Result<Json<Payload>> {
     Ok(payload)
