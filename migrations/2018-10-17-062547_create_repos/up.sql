@@ -1,4 +1,4 @@
-CREATE TABLE "public"."repos" (
+CREATE TABLE "public"."repo" (
     "id" varchar NOT NULL,
     "name" varchar NOT NULL DEFAULT '',
     "created_at" timestamp NOT NULL DEFAULT current_timestamp,
@@ -6,6 +6,6 @@ CREATE TABLE "public"."repos" (
     PRIMARY KEY ("id")
 );
 
-SELECT diesel_manage_updated_at('public.repos');
+SELECT diesel_manage_updated_at('public.repo');
 
-CREATE INDEX "idx_created_at" ON "public"."repos" USING btree(created_at);
+CREATE INDEX "idx_created_at" ON "public"."repo" USING btree(created_at);

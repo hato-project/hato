@@ -1,7 +1,7 @@
 use actix_web::{actix::Handler, error, Error};
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 
-use db::schema::repos::dsl::*;
+use db::schema::repo::dsl::*;
 use db::ConnDsl;
 use model::{Repo, RepoID};
 
@@ -10,11 +10,11 @@ impl Handler<RepoID> for ConnDsl {
 
     fn handle(&mut self, repo_id: RepoID, _: &mut Self::Context) -> Self::Result {
         let conn = &self.0.get().map_err(error::ErrorInternalServerError)?;
-        let repo = repos
+        let rp = repo
             .filter(&id.eq(&repo_id.repo_id))
             .load::<Repo>(conn)
             .map_err(error::ErrorInternalServerError)?
             .pop();
-        Ok(repo)
+        Ok(rp)
     }
 }
