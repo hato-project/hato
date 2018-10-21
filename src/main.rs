@@ -25,12 +25,13 @@ mod db;
 mod handler;
 mod model;
 mod router;
+mod builder;
 
 use actix_web::{actix::System, server};
 
 #[macro_use]
 extern crate clap;
-use clap::{Arg, App, SubCommand, AppSettings}; 
+use clap::{App, SubCommand, AppSettings}; 
 
 fn main() {
     let app = App::new("hato")
@@ -53,6 +54,7 @@ fn main() {
 }
 
 fn run_builder() {
+    builder::docker::run_command();
     println!("hey i'm builder!");
 }
 
