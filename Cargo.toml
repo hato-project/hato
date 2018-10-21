@@ -27,3 +27,8 @@ features = [
     "r2d2",
 ]
 version = "1.3.3"
+
+[dependencies.clap]
+version = "2"
+default-features = false
+features = [ "suggestions", "color" ]

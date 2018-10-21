@@ -28,7 +28,35 @@ mod router;
 
 use actix_web::{actix::System, server};
 
+#[macro_use]
+extern crate clap;
+use clap::{Arg, App, SubCommand, AppSettings}; 
+
 fn main() {
+    let app = App::new("hato")
+    .version(crate_version!())
+    .about("Let the Hato Fly.")
+    .author("Hato Project")
+    .subcommand(SubCommand::with_name("server")
+                .about("Main server of hato"))
+    .subcommand(SubCommand::with_name("builder")
+                .about("Builder of hato"))
+    .setting(AppSettings::ArgRequiredElseHelp);
+    
+    let matches = app.get_matches();
+    match matches.subcommand() {
+        ("server", Some(_server_matches)) => {run_server();}
+        ("builder", Some(_builder_matches)) => {run_builder();}
+        (_,_) => {}
+    }
+
+}
+
+fn run_builder() {
+    println!("hey i'm builder!");
+}
+
+fn run_server() {
     env_logger::init();
 
     info!("Starting hato...");
