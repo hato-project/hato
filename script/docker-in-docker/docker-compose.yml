@@ -1,0 +1,7 @@
+# docker in docker, use the host's docker actually
+version: '2'
+services:
+  postgres:
+    image: "docker:18.06"
+    volumes:
+      - ./var/run/docker.sock:/var/run/docker.sock
