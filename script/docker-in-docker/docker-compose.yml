@@ -2,6 +2,6 @@
 version: '2'
 services:
   postgres:
-    image: "docker:18.06"
+    image: "docker:stable-git"
     volumes:
       - ./var/run/docker.sock:/var/run/docker.sock
