@@ -20,37 +20,38 @@ extern crate chrono;
 extern crate serde_json;
 
 mod api;
+mod builder;
 mod common;
 mod db;
 mod handler;
 mod model;
 mod router;
-mod builder;
 
 use actix_web::{actix::System, server};
 
 #[macro_use]
 extern crate clap;
-use clap::{App, SubCommand, AppSettings}; 
+use clap::{App, AppSettings, SubCommand};
 
 fn main() {
     let app = App::new("hato")
-    .version(crate_version!())
-    .about("Let the Hato Fly.")
-    .author("Hato Project")
-    .subcommand(SubCommand::with_name("server")
-                .about("Main server of hato"))
-    .subcommand(SubCommand::with_name("builder")
-                .about("Builder of hato"))
-    .setting(AppSettings::ArgRequiredElseHelp);
-    
+        .version(crate_version!())
+        .about("Let the Hato Fly.")
+        .author("Hato Project")
+        .subcommand(SubCommand::with_name("server").about("Main server of hato"))
+        .subcommand(SubCommand::with_name("builder").about("Builder of hato"))
+        .setting(AppSettings::ArgRequiredElseHelp);
+
     let matches = app.get_matches();
     match matches.subcommand() {
-        ("server", Some(_server_matches)) => {run_server();}
-        ("builder", Some(_builder_matches)) => {run_builder();}
-        (_,_) => {}
+        ("server", Some(_server_matches)) => {
+            run_server();
+        }
+        ("builder", Some(_builder_matches)) => {
+            run_builder();
+        }
+        (_, _) => {}
     }
-
 }
 
 fn run_builder() {
