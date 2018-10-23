@@ -1,7 +1,4 @@
-#![cfg_attr(
-    feature = "cargo-clippy",
-    allow(clippy::needless_pass_by_value)
-)]
+#![cfg_attr(feature = "cargo-clippy", allow(clippy::needless_pass_by_value))]
 
 #[macro_use]
 extern crate diesel;
