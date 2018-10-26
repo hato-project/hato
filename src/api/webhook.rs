@@ -18,28 +18,28 @@ pub struct PushEvent {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Repository {
-    pub id: u64,
-    pub node_id: String,
-    pub name: String,
-    pub full_name: String,
-    pub private: bool,
-    pub html_url: String,
-    pub fork: bool,
-    pub url: String,
+    pub id:             u64,
+    pub node_id:        String,
+    pub name:           String,
+    pub full_name:      String,
+    pub private:        bool,
+    pub html_url:       String,
+    pub fork:           bool,
+    pub url:            String,
     pub default_branch: String,
-    pub master_branch: String,
-    pub created_at: u64,
-    pub updated_at: String,
-    pub pushed_at: u64,
-    pub git_url: String,
-    pub ssh_url: String,
-    pub clone_url: String,
-    pub svn_url: String,
+    pub master_branch:  String,
+    pub created_at:     u64,
+    pub updated_at:     String,
+    pub pushed_at:      u64,
+    pub git_url:        String,
+    pub ssh_url:        String,
+    pub clone_url:      String,
+    pub svn_url:        String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Pusher {
-    pub name: String,
+    pub name:  String,
     pub email: String,
 }
 
