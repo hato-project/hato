@@ -30,6 +30,10 @@ use actix_web::{actix::System, server};
 extern crate clap;
 use clap::{App, AppSettings, SubCommand};
 
+extern crate listenfd;
+
+use listenfd::ListenFd;
+
 fn main() {
     let app = App::new("hato")
         .version(crate_version!())
@@ -63,11 +67,17 @@ fn run_server() {
 
     let sys = System::new("hato");
 
-    server::new(move || vec![router::app_hato().boxed(), router::app_common().boxed()])
-        .bind("0.0.0.0:8000")
-        .unwrap()
-        .shutdown_timeout(2)
-        .start();
+    let mut listenfd = ListenFd::from_env();
+    let mut server = server::new(move || vec![router::app_hato().boxed(), router::app_common().boxed()]);
+
+    server = if let Some(l) = listenfd.take_tcp_listener(0).unwrap() {
+        server.listen(l)
+    } else {
+        server.bind("0.0.0.0:8000").unwrap()
+    };
+        
+    server.shutdown_timeout(2)
+    .start();
 
     sys.run();
 }
