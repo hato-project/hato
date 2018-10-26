@@ -68,16 +68,16 @@ fn run_server() {
     let sys = System::new("hato");
 
     let mut listenfd = ListenFd::from_env();
-    let mut server = server::new(move || vec![router::app_hato().boxed(), router::app_common().boxed()]);
+    let mut server =
+        server::new(move || vec![router::app_hato().boxed(), router::app_common().boxed()]);
 
     server = if let Some(l) = listenfd.take_tcp_listener(0).unwrap() {
         server.listen(l)
     } else {
         server.bind("0.0.0.0:8000").unwrap()
     };
-        
-    server.shutdown_timeout(2)
-    .start();
+
+    server.shutdown_timeout(2).start();
 
     sys.run();
 }
