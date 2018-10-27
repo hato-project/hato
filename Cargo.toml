@@ -17,6 +17,7 @@ rust-crypto = "^0.2"
 jsonwebtoken = "5"
 uuid = "0.7"
 listenfd = "0.3"
+failure = "0.1.3"
 
 [dependencies.chrono]
 features = ["serde"]

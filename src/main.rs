@@ -15,11 +15,14 @@ extern crate serde_derive;
 extern crate chrono;
 #[macro_use]
 extern crate serde_json;
+#[macro_use]
+extern crate failure;
 
 mod api;
 mod builder;
 mod common;
 mod db;
+mod error;
 mod handler;
 mod model;
 mod router;
@@ -61,6 +64,8 @@ fn run_builder() {
 }
 
 fn run_server() {
+    std::env::set_var("RUST_LOG", "actix_web=info");
+
     env_logger::init();
 
     info!("Starting hato...");
