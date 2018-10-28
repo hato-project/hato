@@ -38,6 +38,8 @@ extern crate listenfd;
 use listenfd::ListenFd;
 
 fn main() {
+    dotenv::dotenv().ok();
+
     let app = App::new("hato")
         .version(crate_version!())
         .about("Let the Hato Fly.")
@@ -64,9 +66,11 @@ fn run_builder() {
 }
 
 fn run_server() {
-    std::env::set_var("RUST_LOG", "actix_web=info");
+    let env = env_logger::Env::default()
+        .filter_or("LOG_LEVEL", "info")
+        .write_style("LOG_STYLE");
 
-    env_logger::init();
+    env_logger::init_from_env(env);
 
     info!("Starting hato...");
 
