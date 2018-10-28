@@ -66,9 +66,7 @@ fn run_builder() {
 }
 
 fn run_server() {
-    let env = env_logger::Env::default()
-        .filter_or("LOG_LEVEL", "info")
-        .write_style("LOG_STYLE");
+    let env = env_logger::Env::default().filter_or(env_logger::DEFAULT_FILTER_ENV, "info");
 
     env_logger::init_from_env(env);
 
