@@ -6,11 +6,9 @@ use actix_web::{
 
 use api::*;
 use common::AppState;
-use db::init;
 
-pub fn app_hato() -> App<AppState> {
-    let addr = init();
-    App::with_state(AppState { db: addr.clone() })
+pub fn app_hato(app_state: AppState) -> App<AppState> {
+    App::with_state(app_state)
         .middleware(middleware::Logger::default())
         .prefix("/hato")
         .configure(|app| {

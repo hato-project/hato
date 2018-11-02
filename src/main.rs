@@ -35,6 +35,7 @@ use clap::{App, AppSettings, SubCommand};
 
 extern crate listenfd;
 
+use common::AppState;
 use listenfd::ListenFd;
 
 fn main() {
@@ -75,8 +76,15 @@ fn run_server() {
     let sys = System::new("hato");
 
     let mut listenfd = ListenFd::from_env();
-    let mut server =
-        server::new(move || vec![router::app_hato().boxed(), router::app_common().boxed()]);
+
+    let addr = db::init();
+
+    let mut server = server::new(move || {
+        vec![
+            router::app_hato(AppState { db: addr.clone() }).boxed(),
+            router::app_common().boxed(),
+        ]
+    });
 
     server = if let Some(l) = listenfd.take_tcp_listener(0).unwrap() {
         server.listen(l)

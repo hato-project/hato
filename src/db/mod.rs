@@ -7,17 +7,17 @@ use diesel::r2d2::{ConnectionManager, Pool};
 use dotenv;
 use num_cpus;
 
-pub struct ConnDsl(pub Pool<ConnectionManager<PgConnection>>);
+pub struct DbExecutor(pub Pool<ConnectionManager<PgConnection>>);
 
-impl Actor for ConnDsl {
+impl Actor for DbExecutor {
     type Context = SyncContext<Self>;
 }
 
-pub fn init() -> Addr<ConnDsl> {
+pub fn init() -> Addr<DbExecutor> {
     let db_url = dotenv::var("DATABASE_URL").expect("DATABASE_URL must be set");
     let manager = ConnectionManager::<PgConnection>::new(db_url);
     let conn = Pool::builder()
         .build(manager)
         .expect("Failed to create pool.");
-    SyncArbiter::start(num_cpus::get() * 4, move || ConnDsl(conn.clone()))
+    SyncArbiter::start(num_cpus::get() * 4, move || DbExecutor(conn.clone()))
 }

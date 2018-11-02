@@ -1,6 +1,6 @@
 use actix_web::actix::Addr;
-use db::ConnDsl;
+use db::DbExecutor;
 
 pub struct AppState {
-    pub db: Addr<ConnDsl>,
+    pub db: Addr<DbExecutor>,
 }

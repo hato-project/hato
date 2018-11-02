@@ -2,10 +2,10 @@ use actix_web::{actix::Handler, error, Error};
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 
 use db::schema::repo::dsl::*;
-use db::ConnDsl;
+use db::DbExecutor;
 use model::{Repo, RepoID};
 
-impl Handler<RepoID> for ConnDsl {
+impl Handler<RepoID> for DbExecutor {
     type Result = Result<Option<Repo>, Error>;
 
     fn handle(&mut self, repo_id: RepoID, _: &mut Self::Context) -> Self::Result {
