@@ -1,4 +1,8 @@
 use actix_web::{Json, Result};
+use std::env;
+
+use builder::common::create_dir;
+use builder::git::clone_repo;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct PushEvent {
@@ -53,5 +57,8 @@ pub struct Sender {
 }
 
 pub fn webhook(payload: Json<PushEvent>) -> Result<Json<PushEvent>> {
+    let work_dir = String::from("./tmp");
+    create_dir(&work_dir);
+    clone_repo(&payload.repository.clone_url, &work_dir);
     Ok(payload)
 }

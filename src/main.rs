@@ -22,7 +22,7 @@ mod api;
 mod builder;
 mod common;
 mod db;
-mod error;
+mod errors;
 mod handler;
 mod model;
 mod router;

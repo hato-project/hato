@@ -16,7 +16,7 @@ pub fn run_command() {
     }
 }
 
-pub fn build_image(image_tagname: String) {
+pub fn build_image(image_tagname: &String, work_dir: &String) {
     let output = Command::new("docker")
         .arg("--rm")
         .arg("--tag")
@@ -34,7 +34,7 @@ pub fn build_image(image_tagname: String) {
     }
 }
 
-pub fn push_image(image_tagname: String) {
+pub fn push_image(image_tagname: &String) {
     let output = Command::new("docker")
         .arg("push")
         .arg(image_tagname)
