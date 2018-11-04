@@ -1,9 +1,8 @@
 use actix_web::{
+    App,
     http::{header, Method},
     middleware::{self, cors::Cors},
-    App,
 };
-
 use api::*;
 use common::AppState;
 

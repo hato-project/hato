@@ -1,5 +1,4 @@
 use actix_web::{Json, Result};
-use std::env;
 
 use builder::common::create_dir;
 use builder::git::clone_repo;
