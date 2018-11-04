@@ -1,83 +1,73 @@
 #![cfg_attr(feature = "cargo-clippy", allow(clippy::needless_pass_by_value))]
 
+extern crate actix_web;
+extern crate chrono;
+#[macro_use]
+extern crate clap;
 #[macro_use]
 extern crate diesel;
-extern crate actix_web;
 extern crate dotenv;
 extern crate env_logger;
-extern crate num_cpus;
+#[macro_use]
+extern crate failure;
+extern crate futures;
+extern crate listenfd;
 #[macro_use]
 extern crate log;
-extern crate futures;
+extern crate num_cpus;
 extern crate serde;
 #[macro_use]
 extern crate serde_derive;
-extern crate chrono;
 #[macro_use]
 extern crate serde_json;
-#[macro_use]
-extern crate failure;
+
+use actix_web::{actix::System, server};
+use clap::App;
+use common::AppState;
+use listenfd::ListenFd;
 
 mod api;
 mod builder;
 mod common;
+mod config;
 mod db;
 mod errors;
 mod handler;
 mod model;
 mod router;
 
-use actix_web::{actix::System, server};
-
-#[macro_use]
-extern crate clap;
-use clap::{App, AppSettings, SubCommand};
-
-extern crate listenfd;
-
-use common::AppState;
-use listenfd::ListenFd;
-
 fn main() {
     dotenv::dotenv().ok();
 
-    let app = App::new("hato")
-        .version(crate_version!())
-        .about("Let the Hato Fly.")
-        .author("Hato Project")
-        .subcommand(SubCommand::with_name("server").about("Main server of hato"))
-        .subcommand(SubCommand::with_name("builder").about("Builder of hato"))
-        .setting(AppSettings::ArgRequiredElseHelp);
+    let yaml = load_yaml!("cli.yaml");
+    let matches = App::from_yaml(yaml).get_matches();
 
-    let matches = app.get_matches();
+
     match matches.subcommand() {
-        ("server", Some(_server_matches)) => {
-            run_server();
+        ("server", Some(sub_m)) => {
+            let cfg = config::init_server_config(sub_m);
+            run_server(cfg);
         }
-        ("builder", Some(_builder_matches)) => {
-            run_builder();
+        ("builder", Some(sub_m)) => {
+            let cfg = config::init_builder_config(sub_m);
+            run_builder(cfg);
         }
-        (_, _) => {}
+        _ => println!("No subcommand was used"),
     }
 }
 
-fn run_builder() {
+fn run_builder(matches: config::BuilderConfig) {
     builder::docker::run_command();
     println!("hey i'm builder!");
 }
 
-fn run_server() {
-    let env = env_logger::Env::default().filter_or(env_logger::DEFAULT_FILTER_ENV, "info");
-
-    env_logger::init_from_env(env);
-
+fn run_server(cfg: config::ServerConfig) {
     info!("Starting hato...");
 
     let sys = System::new("hato");
-
     let mut listenfd = ListenFd::from_env();
 
-    let addr = db::init();
+    let addr = db::init(cfg.db_url);
 
     let mut server = server::new(move || {
         vec![
@@ -89,7 +79,7 @@ fn run_server() {
     server = if let Some(l) = listenfd.take_tcp_listener(0).unwrap() {
         server.listen(l)
     } else {
-        server.bind("0.0.0.0:8000").unwrap()
+        server.bind(cfg.listen_at).unwrap()
     };
 
     server.shutdown_timeout(2).start();
