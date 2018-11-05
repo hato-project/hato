@@ -40,8 +40,7 @@ fn main() {
     dotenv::dotenv().ok();
 
     let yaml = load_yaml!("cli.yaml");
-    let matches = App::from_yaml(yaml).get_matches();
-
+    let matches = App::from_yaml(yaml).version(crate_version!()).get_matches();
 
     match matches.subcommand() {
         ("server", Some(sub_m)) => {
