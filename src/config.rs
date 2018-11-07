@@ -4,21 +4,20 @@ use clap::ArgMatches;
 
 #[derive(Debug, Copy, Clone)]
 pub struct ServerConfig<'a> {
-    pub  common_config: CommonConfig,
-    pub listen_at: &'a str,
-    pub db_url: &'a str,
+    pub common_config: CommonConfig,
+    pub listen_at:     &'a str,
+    pub db_url:        &'a str,
 }
 
 #[derive(Debug, Copy, Clone)]
 pub struct BuilderConfig {
-    pub  common_config: CommonConfig,
+    pub common_config: CommonConfig,
 }
 
 #[derive(Debug, Copy, Clone)]
 pub struct CommonConfig {
-    pub verbose: simplelog::LevelFilter
+    pub verbose: simplelog::LevelFilter,
 }
-
 
 fn init_common_config(matches: &ArgMatches) -> CommonConfig {
     let level = match matches.value_of("log_level") {
@@ -27,7 +26,7 @@ fn init_common_config(matches: &ArgMatches) -> CommonConfig {
         Some("Info") => simplelog::LevelFilter::Info,
         Some("Debug") => simplelog::LevelFilter::Debug,
         Some("Trace") => simplelog::LevelFilter::Trace,
-        unknown => panic!("{:?} log level", unknown)
+        unknown => panic!("{:?} log level", unknown),
     };
 
     println!("current log level: {:?}", level);
