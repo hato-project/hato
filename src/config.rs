@@ -30,7 +30,7 @@ fn init_common_config(matches: &ArgMatches) -> CommonConfig {
     };
 
     println!("current log level: {:?}", level);
-    simplelog::TermLogger::init(level, simplelog::Config::default());
+    simplelog::TermLogger::init(level, simplelog::Config::default()).expect("failed to init logger");
 
     CommonConfig { verbose: level }
 }

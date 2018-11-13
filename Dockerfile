@@ -18,6 +18,6 @@ FROM debian:stretch-slim
 ARG OUT_DIR=./target/docker/
 COPY --from=build /hato/$OUT_DIR/hato /
 
-EXPOSE 8000
+EXPOSE 8080
 
 CMD ["/hato"]
