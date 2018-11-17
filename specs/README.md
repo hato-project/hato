@@ -1,11 +1,14 @@
 # YAML Configuration Specification
 version: "0.1"
 
-builder: your_builder_image
+builder: 
+  - "your_builder_image_tag"
+  - "your_builder_image_tag2"
 
 env:
-  - FOO=bar
-  - BAZ=qux
+  - FOO: bar
+    BAR: bazz
+  - QUX: quux
 
 branches:
   only:
@@ -25,14 +28,23 @@ tags:
     - v2.0
     - /^except-tag$/
 
+before_install:
+  - command 1
+  - command 2
+
+
+install:
+  - command 1
+  - command 2
+
 build:
-  before:
+  before_script:
     - command 1
     - command 2
-  ci:
+  script:
     - command 1
     - command 2
-  after:
+  after_script:
     - command 1
     - command 2
   on_success:
@@ -41,9 +53,35 @@ build:
   on_failure:
     - command 1
     - command 2
-  push:
-    docker_tag: my/dockerhub_image
+test:
+  before_script:
+    - command 1
+    - command 2
+  script:
+    - command 1
+    - command 2
+  after_script:
+    - command 1
+    - command 2
+  on_success:
+    - command 1
+    - command 2
+  on_failure:
+    - command 1
+    - command 2
 
+matrix:
+  include:
+  - builder: "builder_env_image_tag_1"
+    env: FOO=bar
+  - name: "test 2"
+    builder: "builder_env_image_tag_2"
+    env: FOO=baz
+  exclude:
+  - env: FOO=bar
+  - name: "test 2"
+    builder: "builder_env_image_tag_2"
+    env: FOO=baz
 notifications:
   webhooks:
     urls:

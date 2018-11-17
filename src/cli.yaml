@@ -11,6 +11,7 @@ args:
     takes_value: true
     help: Sets the level of log verbosity
     possible_values: [Trace, Debug, Info, Warn, Error]
+    case_insensitive: true
 subcommands:
 - server:
     about: Main server of hato
