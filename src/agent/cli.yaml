@@ -1,0 +1,17 @@
+name: hato-agent
+author: Hato Project
+about: Agent of hato
+settings:
+    - ArgRequiredElseHelp
+args:
+    - log_level:
+        env: LOG_LEVEL
+        short: v
+        global: true
+        takes_value: true
+        help: Sets the level of log verbosity
+        possible_values: [Trace, Debug, Info, Warn, Error]
+        case_insensitive: true
+    - builder:
+        about: Builder of hato
+        args:

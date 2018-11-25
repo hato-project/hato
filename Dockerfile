@@ -16,8 +16,8 @@ RUN touch src/* && \
 FROM debian:stretch-slim
 
 ARG OUT_DIR=./target/docker/
-COPY --from=build /hato/$OUT_DIR/hato /
+COPY --from=build /hato/$OUT_DIR/* /
 
-EXPOSE 8080
+EXPOSE 8000
 
-CMD ["/hato"]
+CMD ["/hato-server"]

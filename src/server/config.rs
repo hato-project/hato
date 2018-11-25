@@ -21,16 +21,17 @@ pub struct CommonConfig {
 
 fn init_common_config(matches: &ArgMatches) -> CommonConfig {
     let level = match matches.value_of("log_level") {
-        None | Some("Error") => simplelog::LevelFilter::Error,
-        Some("Warn") => simplelog::LevelFilter::Warn,
-        Some("Info") => simplelog::LevelFilter::Info,
-        Some("Debug") => simplelog::LevelFilter::Debug,
-        Some("Trace") => simplelog::LevelFilter::Trace,
+        None | Some("error") => simplelog::LevelFilter::Error,
+        Some("warn") => simplelog::LevelFilter::Warn,
+        Some("info") => simplelog::LevelFilter::Info,
+        Some("debug") => simplelog::LevelFilter::Debug,
+        Some("trace") => simplelog::LevelFilter::Trace,
         unknown => panic!("{:?} log level", unknown),
     };
 
     println!("current log level: {:?}", level);
-    simplelog::TermLogger::init(level, simplelog::Config::default()).expect("failed to init logger");
+    simplelog::TermLogger::init(level, simplelog::Config::default())
+        .expect("failed to init logger");
 
     CommonConfig { verbose: level }
 }
@@ -43,11 +44,5 @@ pub fn init_server_config<'a>(matches: &'a ArgMatches<'a>) -> ServerConfig<'a> {
         common_config: init_common_config(matches),
         listen_at,
         db_url,
-    }
-}
-
-pub fn init_builder_config(matches: &ArgMatches) -> BuilderConfig {
-    BuilderConfig {
-        common_config: init_common_config(matches),
     }
 }

@@ -41,23 +41,8 @@ fn main() {
 
     let yaml = load_yaml!("cli.yaml");
     let matches = App::from_yaml(yaml).version(crate_version!()).get_matches();
-
-    match matches.subcommand() {
-        ("server", Some(sub_m)) => {
-            let cfg = config::init_server_config(sub_m);
-            run_server(cfg);
-        }
-        ("builder", Some(sub_m)) => {
-            let cfg = config::init_builder_config(sub_m);
-            run_builder(cfg);
-        }
-        _ => println!("No subcommand was used"),
-    }
-}
-
-fn run_builder(matches: config::BuilderConfig) {
-    builder::docker::run_command();
-    println!("hey i'm builder!");
+    let cfg = config::init_server_config(&matches);
+    run_server(cfg);
 }
 
 fn run_server(cfg: config::ServerConfig) {

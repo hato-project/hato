@@ -3,6 +3,14 @@ authors = ["realityone <realityone@me.com>"]
 name = "hato"
 version = "0.1.0"
 
+[[bin]]
+name = "hato-server"
+path = "src/server/main.rs"
+
+[[bin]]
+name = "hato-agent"
+path = "src/agent/main.rs"
+
 [dependencies]
 actix-web = "0.7"
 dotenv = "0.13.0"

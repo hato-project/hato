@@ -1,26 +1,22 @@
-name: hato
+name: hato-server
 author: Hato Project
-about: Let Hato Fly
+about: Server of hato
 settings:
 - ArgRequiredElseHelp
 args:
-- log_level:
-    env: LOG_LEVEL
-    short: v
-    global: true
-    takes_value: true
-    help: Sets the level of log verbosity
-    possible_values: [Trace, Debug, Info, Warn, Error]
-    # case_insensitive: true # enable when clap upgrade
-subcommands:
-- server:
-    about: Main server of hato
-    args:
+    - log_level:
+        env: LOG_LEVEL
+        short: v
+        global: true
+        takes_value: true
+        help: Sets the level of log verbosity
+        possible_values: [trace, debug, info, warn, error]
+        #case_insensitive: true # enable when clap upgrade
     - listen_at:
         env: LISTEN_AT
         short: l
         help: Address that Hato server listen at
-        default_value: 0.0.0.0:8080
+        default_value: 0.0.0.0:8000
         required: true
         takes_value: true
     - db_url:
@@ -30,6 +26,3 @@ subcommands:
         default_value: postgres://postgres:dangerous@127.0.0.1:5432/hato
         required: true
         takes_value: true
-- builder:
-    about: Builder of hato
-    args:

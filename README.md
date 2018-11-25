@@ -14,5 +14,5 @@ cargo install systemfd cargo-watch
 
 2.start development server   
 ```
-systemfd --no-pid -s http::8000 -- cargo watch -x 'run -- server'
+systemfd --no-pid -s http::8000 -- cargo watch -x 'run --bin hato-server'
 ```
