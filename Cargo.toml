@@ -2,6 +2,7 @@
 authors = ["realityone <realityone@me.com>"]
 name = "hato"
 version = "0.1.0"
+autobins = false
 
 [[bin]]
 name = "hato-server"
