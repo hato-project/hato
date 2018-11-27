@@ -3,8 +3,8 @@ use actix_web::{
     middleware::{self, cors::Cors},
     App,
 };
-use api::*;
-use common::AppState;
+use crate::api::*;
+use crate::common::AppState;
 
 pub fn app_hato(app_state: AppState) -> App<AppState> {
     App::with_state(app_state)

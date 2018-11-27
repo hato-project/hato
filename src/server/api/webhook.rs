@@ -1,7 +1,7 @@
 use actix_web::{Json, Result};
 
-use builder::common::create_dir;
-use builder::git::clone_repo;
+use crate::builder::common::create_dir;
+use crate::builder::git::clone_repo;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct PushEvent {

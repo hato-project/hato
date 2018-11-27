@@ -1,8 +1,8 @@
 use actix_web::{AsyncResponder, FutureResponse, HttpRequest, HttpResponse};
 use futures::future::Future;
 
-use common::AppState;
-use model::*;
+use crate::common::AppState;
+use crate::model::*;
 
 pub fn repo(req: HttpRequest<AppState>) -> FutureResponse<HttpResponse> {
     let repo_id = req.match_info().get("repo_id").unwrap().to_string();

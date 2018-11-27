@@ -1,9 +1,9 @@
 use actix_web::{actix::Handler, error, Error};
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 
-use db::schema::repo::dsl::*;
-use db::DbExecutor;
-use model::{Repo, RepoID};
+use crate::db::schema::repo::dsl::*;
+use crate::db::DbExecutor;
+use crate::model::{Repo, RepoID};
 
 impl Handler<RepoID> for DbExecutor {
     type Result = Result<Option<Repo>, Error>;
