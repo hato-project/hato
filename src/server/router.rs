@@ -1,10 +1,10 @@
+use crate::api::*;
+use crate::common::AppState;
 use actix_web::{
     http::{header, Method},
     middleware::{self, cors::Cors},
     App,
 };
-use crate::api::*;
-use crate::common::AppState;
 
 pub fn app_hato(app_state: AppState) -> App<AppState> {
     App::with_state(app_state)
