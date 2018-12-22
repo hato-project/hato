@@ -21,9 +21,9 @@ extern crate serde_derive;
 #[macro_use]
 extern crate serde_json;
 
-use crate::common::AppState;
 use actix_web::{actix::System, server};
 use clap::App;
+use crate::common::AppState;
 use listenfd::ListenFd;
 
 mod api;
