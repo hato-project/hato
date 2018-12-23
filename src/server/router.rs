@@ -9,7 +9,7 @@ use crate::common::AppState;
 pub fn app_hato(app_state: AppState) -> App<AppState> {
     App::with_state(app_state)
         .middleware(middleware::Logger::default())
-        .prefix("/hato")
+        .prefix("/api")
         .configure(|app| {
             Cors::for_app(app)
                 .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
@@ -21,9 +21,7 @@ pub fn app_hato(app_state: AppState) -> App<AppState> {
                 ])
                 .supports_credentials()
                 .max_age(3600)
-                .resource("/repo/{repo_id}", |r| {
-                    r.method(Method::GET).with(repo::repo);
-                })
+                .resource("/register", |r| r.method(Method::POST).with(user::register))
                 .register()
         })
 }

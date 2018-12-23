@@ -8,7 +8,7 @@ pub fn repo(req: HttpRequest<AppState>) -> FutureResponse<HttpResponse> {
     let repo_id = req.match_info().get("repo_id").unwrap().to_string();
     req.state()
         .db
-        .send(RepoID { repo_id })
+        .send(repo::RepoID { repo_id })
         .from_err()
         .and_then(|res| match res {
             Ok(repo) => {

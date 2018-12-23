@@ -13,6 +13,7 @@ name = "hato-agent"
 path = "src/agent/main.rs"
 
 [dependencies]
+actix = "0.7"
 actix-web = "0.7"
 dotenv = "0.13.0"
 env_logger = "0.5.13"
@@ -28,6 +29,7 @@ uuid = "0.7"
 listenfd = "0.3"
 failure = "0.1.3"
 simplelog = "^0.5.0"
+bcrypt = "0.2"
 
 [dependencies.chrono]
 features = ["serde"]

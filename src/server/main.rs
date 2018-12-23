@@ -20,6 +20,7 @@ extern crate serde;
 extern crate serde_derive;
 #[macro_use]
 extern crate serde_json;
+extern crate bcrypt;
 
 use actix_web::{actix::System, server};
 use clap::App;
@@ -35,6 +36,7 @@ mod errors;
 mod handler;
 mod model;
 mod router;
+mod utils;
 
 fn main() {
     dotenv::dotenv().ok();

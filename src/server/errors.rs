@@ -1,18 +1,21 @@
-use actix_web::{error, http, HttpResponse};
+use actix_web::{HttpResponse, ResponseError};
 
 #[derive(Fail, Debug)]
-enum APIError {
+pub enum APIError {
     #[fail(display = "internal error")]
     InternalError,
+
     #[fail(display = "bad request")]
     BadRequest,
 }
 
-impl error::ResponseError for APIError {
+impl ResponseError for APIError {
     fn error_response(&self) -> HttpResponse {
         match *self {
-            APIError::InternalError => HttpResponse::new(http::StatusCode::INTERNAL_SERVER_ERROR),
-            APIError::BadRequest => HttpResponse::new(http::StatusCode::BAD_REQUEST),
+            APIError::InternalError => {
+                HttpResponse::InternalServerError().json("Internal Server Error")
+            }
+            APIError::BadRequest => HttpResponse::BadRequest().json("Bad Request"),
         }
     }
 }

@@ -3,7 +3,7 @@ use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 
 use crate::db::schema::repo::dsl::*;
 use crate::db::DbExecutor;
-use crate::model::{Repo, RepoID};
+use crate::model::repo::{Repo, RepoID};
 
 impl Handler<RepoID> for DbExecutor {
     type Result = Result<Option<Repo>, Error>;

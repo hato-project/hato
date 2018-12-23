@@ -1,4 +1,5 @@
 pub mod repo;
+pub mod user;
 pub mod webhook;
 
 use actix_web::HttpRequest;
