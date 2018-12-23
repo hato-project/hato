@@ -16,8 +16,8 @@ impl Actor for DbExecutor {
 
 pub fn init(db_url: &str) -> Addr<DbExecutor> {
     let manager = ConnectionManager::<PgConnection>::new(db_url);
-    let conn = Pool::builder()
+    let pool = Pool::builder()
         .build(manager)
         .expect("Failed to create pool.");
-    SyncArbiter::start(num_cpus::get() * 4, move || DbExecutor(conn.clone()))
+    SyncArbiter::start(num_cpus::get(), move || DbExecutor(pool.clone()))
 }

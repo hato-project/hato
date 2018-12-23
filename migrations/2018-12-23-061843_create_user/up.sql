@@ -1,5 +1,5 @@
 CREATE TABLE "public"."user" (
-    "id" SERIAL PRIMARY KEY,
+    "id" SERIAL PRIMARY KEY NOT NULL,
     "name" varchar NOT NULL,
     "nickname" varchar,
     "email" varchar NOT NULL,
