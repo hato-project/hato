@@ -1,5 +1,5 @@
-use chrono::prelude::*;
 use crate::db::schema::user;
+use chrono::prelude::*;
 
 #[derive(Clone, Debug, Serialize, Insertable)]
 #[table_name = "user"]

@@ -22,9 +22,9 @@ extern crate serde_derive;
 extern crate serde_json;
 extern crate bcrypt;
 
+use crate::common::AppState;
 use actix_web::{actix::System, server};
 use clap::App;
-use crate::common::AppState;
 use listenfd::ListenFd;
 
 mod api;

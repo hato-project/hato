@@ -25,7 +25,7 @@ impl Handler<RegisterUser> for DbExecutor {
         let new_user = NewUser {
             name:          msg.name,
             email:         msg.email,
-            password_hash: hash_password(&msg.password).unwrap(),
+            password_hash: hash_password(&msg.password),
         };
 
         let inserted_user: UserData = diesel::insert_into(user)
