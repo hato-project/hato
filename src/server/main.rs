@@ -1,31 +1,34 @@
 #![cfg_attr(feature = "cargo-clippy", allow(clippy::needless_pass_by_value))]
 
-extern crate actix_web;
-extern crate chrono;
 #[macro_use]
 extern crate clap;
 #[macro_use]
 extern crate diesel;
-extern crate dotenv;
-extern crate env_logger;
 #[macro_use]
 extern crate failure;
-extern crate futures;
-extern crate listenfd;
 #[macro_use]
 extern crate log;
-extern crate num_cpus;
-extern crate serde;
 #[macro_use]
 extern crate serde_derive;
 #[macro_use]
 extern crate serde_json;
-extern crate bcrypt;
 
-use crate::common::AppState;
+extern crate actix_web;
+extern crate bcrypt;
+extern crate chrono;
+extern crate dotenv;
+extern crate env_logger;
+extern crate futures;
+extern crate jsonwebtoken as jwt;
+extern crate listenfd;
+extern crate num_cpus;
+extern crate serde;
+
 use actix_web::{actix::System, server};
 use clap::App;
 use listenfd::ListenFd;
+
+use crate::common::AppState;
 
 mod api;
 mod builder;

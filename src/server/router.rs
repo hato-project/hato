@@ -22,6 +22,7 @@ pub fn app_hato(app_state: AppState) -> App<AppState> {
                 .supports_credentials()
                 .max_age(3600)
                 .resource("/register", |r| r.method(Method::POST).with(user::register))
+                .resource("/login", |r| r.method(Method::POST).with(user::login))
                 .register()
         })
 }

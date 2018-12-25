@@ -1,7 +1,17 @@
-use crate::errors::APIError;
 use bcrypt::{hash, verify};
-
+use jwt::{decode, encode, Algorithm, Header, Validation};
 use std::env;
+
+use crate::errors::APIError;
+
+#[derive(Debug, Serialize, Deserialize)]
+struct Claims {
+    sub:   String,
+    iss:   String,
+    iat:   usize,
+    exp:   usize,
+    email: String,
+}
 
 static DEFAULT_HASH_COST: u32 = 10;
 

@@ -1,4 +1,5 @@
 use actix_web::actix::{Handler, Message};
+use diesel::prelude::*;
 use diesel::RunQueryDsl;
 
 use crate::db::DbExecutor;
@@ -14,6 +15,16 @@ pub struct RegisterUser {
 }
 
 impl Message for RegisterUser {
+    type Result = Result<UserData, APIError>;
+}
+
+#[derive(Debug, Deserialize)]
+pub struct LoginUser {
+    pub email:    String,
+    pub password: String,
+}
+
+impl Message for LoginUser {
     type Result = Result<UserData, APIError>;
 }
 
@@ -33,5 +44,19 @@ impl Handler<RegisterUser> for DbExecutor {
             .get_result(conn)
             .map_err(|_| APIError::InternalError)?;
         Ok(inserted_user)
+    }
+}
+
+impl Handler<LoginUser> for DbExecutor {
+    type Result = Result<UserData, APIError>;
+    fn handle(&mut self, msg: LoginUser, _: &mut Self::Context) -> Self::Result {
+        let conn = &self.0.get().map_err(|_| APIError::InternalError)?;
+        use db::schema::user::dsl::{email, user};
+        let u = user
+            .filter(email.eq(msg.email))
+            .first::<UserData>(conn)
+            .map_err(|_| APIError::InternalError)?;
+        print!("{:?}", u);
+        Ok(u)
     }
 }
