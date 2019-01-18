@@ -5,7 +5,7 @@ use diesel::RunQueryDsl;
 use crate::db::DbExecutor;
 use crate::errors::APIError;
 use crate::model::user::{NewUser, UserData};
-use crate::utils::hash_password;
+use crate::utils::{hash_password, verify_password};
 
 #[derive(Debug, Deserialize)]
 pub struct RegisterUser {
@@ -56,7 +56,9 @@ impl Handler<LoginUser> for DbExecutor {
             .filter(email.eq(msg.email))
             .first::<UserData>(conn)
             .map_err(|_| APIError::InternalError)?;
-        print!("{:?}", u);
-        Ok(u)
+        match verify_password(&msg.password, &u.password_hash) {
+            true => Ok(u),
+            false => Err(APIError::BadRequest),
+        }
     }
 }

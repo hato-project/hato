@@ -2,8 +2,6 @@ use bcrypt::{hash, verify};
 use jwt::{decode, encode, Algorithm, Header, Validation};
 use std::env;
 
-use crate::errors::APIError;
-
 #[derive(Debug, Serialize, Deserialize)]
 struct Claims {
     sub:   String,
