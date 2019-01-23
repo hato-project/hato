@@ -3,7 +3,7 @@ use diesel::prelude::*;
 use diesel::RunQueryDsl;
 
 use crate::db::DbExecutor;
-use crate::errors::APIError;
+use crate::errors::APIErrorKind;
 use crate::model::user::{NewUser, UserData};
 use crate::utils::{hash_password, verify_password};
 
@@ -15,7 +15,7 @@ pub struct RegisterUser {
 }
 
 impl Message for RegisterUser {
-    type Result = Result<UserData, APIError>;
+    type Result = Result<UserData, APIErrorKind>;
 }
 
 #[derive(Debug, Deserialize)]
@@ -25,14 +25,14 @@ pub struct LoginUser {
 }
 
 impl Message for LoginUser {
-    type Result = Result<UserData, APIError>;
+    type Result = Result<UserData, APIErrorKind>;
 }
 
 impl Handler<RegisterUser> for DbExecutor {
-    type Result = Result<UserData, APIError>;
+    type Result = Result<UserData, APIErrorKind>;
     fn handle(&mut self, msg: RegisterUser, _: &mut Self::Context) -> Self::Result {
         use db::schema::user::dsl::user;
-        let conn = &self.0.get().map_err(|_| APIError::InternalError)?;
+        let conn = &self.0.get().map_err(|_| APIErrorKind::InternalError)?;
         let new_user = NewUser {
             name:          msg.name,
             email:         msg.email,
@@ -42,23 +42,23 @@ impl Handler<RegisterUser> for DbExecutor {
         let inserted_user: UserData = diesel::insert_into(user)
             .values(&new_user)
             .get_result(conn)
-            .map_err(|_| APIError::InternalError)?;
+            .map_err(|_| APIErrorKind::InternalError)?;
         Ok(inserted_user)
     }
 }
 
 impl Handler<LoginUser> for DbExecutor {
-    type Result = Result<UserData, APIError>;
+    type Result = Result<UserData, APIErrorKind>;
     fn handle(&mut self, msg: LoginUser, _: &mut Self::Context) -> Self::Result {
-        let conn = &self.0.get().map_err(|_| APIError::InternalError)?;
+        let conn = &self.0.get().map_err(|_| APIErrorKind::InternalError)?;
         use db::schema::user::dsl::{email, user};
         let u = user
             .filter(email.eq(msg.email))
             .first::<UserData>(conn)
-            .map_err(|_| APIError::InternalError)?;
+            .map_err(|_| APIErrorKind::InternalError)?;
         match verify_password(&msg.password, &u.password_hash) {
             true => Ok(u),
-            false => Err(APIError::BadRequest),
+            false => Err(APIErrorKind::BadRequest),
         }
     }
 }
