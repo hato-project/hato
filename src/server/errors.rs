@@ -1,6 +1,5 @@
 use actix_web::{HttpResponse, ResponseError};
 use failure::{Backtrace, Context, Fail};
-use serde::{Serialize, Serializer};
 use std::fmt::{Display, Formatter, Result};
 
 #[derive(Debug)]
@@ -28,10 +27,6 @@ pub enum APIErrorKind {
 
     #[fail(display = "Conflict")]
     Conflict,
-}
-
-struct ErrorPayload {
-    message: String,
 }
 
 impl Fail for APIError {
@@ -73,9 +68,12 @@ impl From<Context<APIErrorKind>> for APIError {
 impl ResponseError for APIErrorKind {
     fn error_response(&self) -> HttpResponse {
         match *self {
-            e @ APIErrorKind::InternalError => HttpResponse::InternalServerError().json(e),
             e @ APIErrorKind::BadRequest => HttpResponse::BadRequest().json(e),
-            _ => unimplemented!(),
+            e @ APIErrorKind::Unauthorized => HttpResponse::Unauthorized().json(e),
+            e @ APIErrorKind::NotFound => HttpResponse::NotFound().json(e),
+            e @ APIErrorKind::Forbidden => HttpResponse::Forbidden().json(e),
+            e @ APIErrorKind::Conflict => HttpResponse::Conflict().json(e),
+            e => HttpResponse::InternalServerError().json(e),
         }
     }
 }

@@ -1,23 +1,20 @@
-use actix_web::{AsyncResponder, FutureResponse, HttpRequest, HttpResponse};
+use actix_web::{AsyncResponder, FutureResponse, HttpResponse, Json, ResponseError, State};
 use futures::future::Future;
 
 use crate::common::AppState;
-use crate::model::*;
 
-pub fn repo(req: HttpRequest<AppState>) -> FutureResponse<HttpResponse> {
-    let repo_id = req.match_info().get("repo_id").unwrap().to_string();
-    req.state()
-        .db
-        .send(repo::RepoID { repo_id })
-        .from_err()
-        .and_then(|res| match res {
-            Ok(repo) => {
-                if let Some(repo) = repo {
-                    return Ok(HttpResponse::Ok().json(repo));
-                }
-                Ok(HttpResponse::NotFound().into())
-            }
-            Err(_) => Ok(HttpResponse::InternalServerError().into()),
-        })
-        .responder()
+pub fn list_repos(state: State<AppState>) -> FutureResponse<HttpResponse> {
+    unimplemented!()
+}
+
+pub fn create_repo(state: State<AppState>) -> FutureResponse<HttpResponse> {
+    unimplemented!()
+}
+
+pub fn update_repo(state: State<AppState>) -> FutureResponse<HttpResponse> {
+    unimplemented!()
+}
+
+pub fn delete_repo(state: State<AppState>) -> FutureResponse<HttpResponse> {
+    unimplemented!()
 }
