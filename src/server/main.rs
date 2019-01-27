@@ -39,6 +39,7 @@ mod config;
 mod db;
 mod errors;
 mod handler;
+mod middleware;
 mod model;
 mod router;
 mod utils;

@@ -44,7 +44,7 @@ features = [
     "r2d2",
     "chrono",
 ]
-version = "1.3"
+version = "1.4"
 
 [dependencies.clap]
 version = "2.32"

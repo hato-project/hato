@@ -1,5 +1,6 @@
 use crate::api::*;
 use crate::common::AppState;
+use crate::middleware::auth::Auth;
 use actix_web::{
     http::{header, Method},
     middleware::{self, cors::Cors},
@@ -9,6 +10,7 @@ use actix_web::{
 pub fn app_hato(app_state: AppState) -> App<AppState> {
     App::with_state(app_state)
         .middleware(middleware::Logger::default())
+        .middleware(Auth)
         .prefix("/api")
         .configure(|app| {
             Cors::for_app(app)
