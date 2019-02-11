@@ -25,6 +25,9 @@ pub enum APIErrorKind {
     #[fail(display = "Not Found")]
     NotFound,
 
+    #[fail(display = "User not Found")]
+    UserNotFound,
+
     #[fail(display = "Conflict")]
     Conflict,
 }
@@ -71,6 +74,7 @@ impl ResponseError for APIErrorKind {
             e @ APIErrorKind::BadRequest => HttpResponse::BadRequest().json(e),
             e @ APIErrorKind::Unauthorized => HttpResponse::Unauthorized().json(e),
             e @ APIErrorKind::NotFound => HttpResponse::NotFound().json(e),
+            e @ APIErrorKind::UserNotFound => HttpResponse::NotFound().json(e),
             e @ APIErrorKind::Forbidden => HttpResponse::Forbidden().json(e),
             e @ APIErrorKind::Conflict => HttpResponse::Conflict().json(e),
             e => HttpResponse::InternalServerError().json(e),
