@@ -1,3 +1,5 @@
+use crate::errors::APIErrorKind;
+use crate::utils::decode_user_token;
 use actix_web::middleware::{Middleware, Response, Started};
 use actix_web::{
     http::{header, HttpTryFrom},
@@ -8,7 +10,23 @@ pub struct Auth;
 
 impl<S> Middleware<S> for Auth {
     fn start(&self, req: &HttpRequest<S>) -> Result<Started> {
-        Ok(Started::Done)
+        if req.method() == "OPTIONS" {
+            return Ok(Started::Done);
+        }
+
+        let token = req
+            .headers()
+            .get("AUTHORIZATION")
+            .map(|t| t.to_str().ok())
+            .ok_or(APIErrorKind::Unauthorized)?;
+
+        match token {
+            Some(t) => {
+                decode_user_token(t)?;
+                return Ok(Started::Done);
+            }
+            None => Err(APIErrorKind::Unauthorized.into()),
+        }
     }
 
     fn response(&self, req: &HttpRequest<S>, mut resp: HttpResponse) -> Result<Response> {

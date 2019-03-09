@@ -4,6 +4,8 @@ use jwt::{decode, encode, Algorithm, Header, Validation};
 use std::env;
 use std::time::{Duration, Instant};
 
+use crate::errors::APIErrorKind;
+
 // static USER_TOKEN_EXPIRATION_TIME: Duration = Duration::new(60 * 60 * 24 * 7, 0);
 
 lazy_static! {
@@ -19,7 +21,7 @@ lazy_static! {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-struct Claims {
+pub struct Claims {
     email: String,
     name:  String,
 }
@@ -32,9 +34,13 @@ pub fn encode_user_token(user: &UserData) -> String {
     token
 }
 
-// pub fn decode_user_token(token: String) -> User {
-//     unimplemented!()
-// }
+pub fn decode_user_token(token: &str) -> Result<Claims, APIErrorKind> {
+    let result = decode::<Claims>(&token, SECRET.as_ref(), &Validation::default());
+    match result {
+        Ok(data) => Ok(data.claims),
+        _ => Err(APIErrorKind::Unauthorized.into()),
+    }
+}
 
 static DEFAULT_HASH_COST: u32 = 10;
 
