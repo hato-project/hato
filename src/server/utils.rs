@@ -1,8 +1,8 @@
 use crate::model::user::UserData;
 use bcrypt::{hash, verify};
+use chrono::{Duration, Local};
 use jwt::{decode, encode, Algorithm, Header, Validation};
 use std::env;
-use std::time::{Duration, Instant};
 
 use crate::errors::APIErrorKind;
 
@@ -20,15 +20,21 @@ lazy_static! {
     };
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Claims {
-    email: String,
-    name:  String,
+    pub email: String,
+    pub name:  String,
+    pub iat:   i64,
+    pub exp:   i64,
 }
+pub struct Extension(pub Claims);
+
 pub fn encode_user_token(user: &UserData) -> String {
     let claims = Claims {
         email: user.email.clone(),
         name:  user.name.clone(),
+        iat:   Local::now().timestamp(),
+        exp:   (Local::now() + Duration::hours(24)).timestamp(),
     };
     let token = encode(&Header::default(), &claims, SECRET.as_ref()).unwrap();
     token

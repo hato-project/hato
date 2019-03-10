@@ -10,7 +10,6 @@ use actix_web::{
 pub fn app_hato(app_state: AppState) -> App<AppState> {
     App::with_state(app_state)
         .middleware(middleware::Logger::default())
-        .middleware(Auth)
         .prefix("/api")
         .configure(|app| {
             Cors::for_app(app)
@@ -25,6 +24,10 @@ pub fn app_hato(app_state: AppState) -> App<AppState> {
                 .max_age(3600)
                 .resource("/register", |r| r.method(Method::POST).with(user::register))
                 .resource("/login", |r| r.method(Method::POST).with(user::login))
+                .resource("/me", |r| {
+                    r.middleware(Auth);
+                    r.method(Method::GET).f(user::me)
+                })
                 .register()
         })
 }
