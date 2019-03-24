@@ -3,7 +3,7 @@ use crate::utils::{decode_user_token, Extension};
 use actix_web::middleware::{Middleware, Response, Started};
 use actix_web::{
     http::{header, HttpTryFrom},
-    App, HttpRequest, HttpResponse, Result,
+    HttpRequest, HttpResponse, Result,
 };
 
 pub struct Auth;

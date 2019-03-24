@@ -28,6 +28,7 @@ pub fn app_hato(app_state: AppState) -> App<AppState> {
                     r.middleware(Auth);
                     r.method(Method::GET).f(user::me)
                 })
+                .resource("/repo", |r| r.method(Method::POST).with(repo::create_repo))
                 .register()
         })
 }

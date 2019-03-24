@@ -1,20 +1,54 @@
-use actix_web::{actix::Handler, error, Error};
-use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
+use actix_web::actix::{Handler, Message};
+use diesel::RunQueryDsl;
 
-use crate::db::schema::repo::dsl::*;
 use crate::db::DbExecutor;
-use crate::model::repo::{Repo, RepoID};
+use crate::errors::APIErrorKind;
+use crate::model::repo::{NewRepo, Repo};
 
-impl Handler<RepoID> for DbExecutor {
-    type Result = Result<Option<Repo>, Error>;
+#[derive(Debug, Deserialize)]
+pub struct CreateRepo {
+    pub namespace: String,
+    pub name:      String,
+}
 
-    fn handle(&mut self, repo_id: RepoID, _: &mut Self::Context) -> Self::Result {
-        let conn = &self.0.get().map_err(error::ErrorInternalServerError)?;
-        let rp = repo
-            .filter(&id.eq(&repo_id.repo_id))
-            .load::<Repo>(conn)
-            .map_err(error::ErrorInternalServerError)?
-            .pop();
-        Ok(rp)
+impl Message for CreateRepo {
+    type Result = Result<Repo, APIErrorKind>;
+}
+
+#[derive(Debug, Deserialize)]
+pub struct UpdateRepo {
+    pub namespace: String,
+    pub name:      String,
+}
+
+impl Message for UpdateRepo {
+    type Result = Result<Repo, APIErrorKind>;
+}
+
+#[derive(Debug, Deserialize)]
+pub struct DeleteRepo {
+    pub namespace: String,
+    pub name:      String,
+}
+
+impl Message for DeleteRepo {
+    type Result = Result<Repo, APIErrorKind>;
+}
+
+impl Handler<CreateRepo> for DbExecutor {
+    type Result = Result<Repo, APIErrorKind>;
+
+    fn handle(&mut self, msg: CreateRepo, _: &mut Self::Context) -> Self::Result {
+        use db::schema::repo::dsl::repo;
+        let conn = &self.0.get().map_err(|_| APIErrorKind::InternalError)?;
+        let new_repo = NewRepo {
+            namespace: msg.namespace,
+            name:      msg.name,
+        };
+        let created_repo: Repo = diesel::insert_into(repo)
+            .values(&new_repo)
+            .get_result(conn)
+            .map_err(|err| APIErrorKind::InternalError)?;
+        Ok(created_repo)
     }
 }

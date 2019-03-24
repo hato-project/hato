@@ -1,7 +1,7 @@
 use crate::model::user::UserData;
 use bcrypt::{hash, verify};
 use chrono::{Duration, Local};
-use jwt::{decode, encode, Algorithm, Header, Validation};
+use jwt::{decode, encode, Header, Validation};
 use std::env;
 
 use crate::errors::APIErrorKind;

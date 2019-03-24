@@ -1,9 +1,9 @@
 CREATE TABLE "public"."repo" (
-    "id" varchar NOT NULL,
-    "name" varchar NOT NULL DEFAULT '',
+    "namespace" varchar NOT NULL,
+    "name" varchar NOT NULL,
     "created_at" timestamp NOT NULL DEFAULT current_timestamp,
     "updated_at" timestamp NOT NULL DEFAULT current_timestamp,
-    PRIMARY KEY ("id")
+    PRIMARY KEY ("namespace", "name")
 );
 
 SELECT diesel_manage_updated_at('public.repo');

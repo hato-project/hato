@@ -1,19 +1,17 @@
-use actix_web::{actix::Message, Error};
+use crate::db::schema::repo;
 use chrono::prelude::*;
+
+#[derive(Clone, Debug, Serialize, Insertable)]
+#[table_name = "repo"]
+pub struct NewRepo {
+    pub name:      String,
+    pub namespace: String,
+}
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Queryable)]
 pub struct Repo {
-    pub id:         String,
     pub name:       String,
+    pub namespace:  String,
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
-}
-
-#[derive(Deserialize, Serialize, Debug)]
-pub struct RepoID {
-    pub repo_id: String,
-}
-
-impl Message for RepoID {
-    type Result = Result<Option<Repo>, Error>;
 }

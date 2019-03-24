@@ -1,6 +1,6 @@
 table! {
-    repo (id) {
-        id -> Varchar,
+    repo (namespace, name) {
+        namespace -> Varchar,
         name -> Varchar,
         created_at -> Timestamp,
         updated_at -> Timestamp,
